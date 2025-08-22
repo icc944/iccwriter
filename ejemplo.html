@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Demo mínima – Editor de guion</title>
+<style>
+  :root{ --page:#fff; --bg:#e9eef3; --ink:#111; --muted:#6b7280; --accent:#2563eb; }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto}
+  header{position:sticky; top:0; background:#fff; border-bottom:1px solid #e5e7eb; padding:.6rem 1rem; display:flex; gap:.5rem; align-items:center; z-index:1}
+  .btn{border:1px solid #d1d5db; background:#f9fafb; padding:.35rem .7rem; border-radius:.6rem; cursor:pointer}
+  .btn:hover{background:#fff}
+  .badge{font-size:.85rem; color:#fff; background:var(--accent); padding:.15rem .5rem; border-radius:.5rem}
+  .hint{margin-left:auto; color:var(--muted); font-size:.85rem}
+
+  .stage{min-height:100vh; display:flex; justify-content:center; padding:24px}
+  .sheet{width:816px; min-height:1056px; background:var(--page); color:var(--ink); box-shadow:0 20px 60px rgba(0,0,0,.15); border-radius:6px; padding:96px; outline:none}
+  .line{min-height:1.2em; margin:0 0 .35rem}
+
+  /* Estilos por tipo (como Celtx) */
+  .line[data-type="scene"]{font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:#1f2937}
+  .line[data-type="action"]{white-space:pre-wrap}
+  .line[data-type="character"]{text-transform:uppercase; margin-left:30%;}
+  .line[data-type="parenthetical"]{margin-left:28%; font-style:italic}
+  .line[data-type="dialogue"]{margin-left:20%; max-width:60%}
+  .line[data-type="transition"]{text-transform:uppercase; text-align:right; color:#6b7280}
+
+  /* Impresión */
+  @media print{ body{background:#fff} .stage{padding:0} .sheet{box-shadow:none; border-radius:0; padding:2.54cm} @page{size:Letter; margin:2.54cm} }
+</style>
+</head>
+<body>
+  <header>
+    <strong>Demo mínima: guion</strong>
+    <span id="typeBadge" class="badge">ESCENA</span>
+    <button id="saveBtn" class="btn" title="Guardar en este navegador (Ctrl+S)">Guardar</button>
+    <button id="loadBtn" class="btn" title="Cargar desde este navegador">Cargar</button>
+    <button id="exportPdfBtn" class="btn" title="Exportar a PDF (usa Imprimir)">Exportar PDF</button>
+    <span class="hint">Tab rota tipo · Enter crea siguiente · Ctrl+1..6 cambia a Escena/Acción/Personaje/Aparte/Diálogo/Transición</span>
+  </header>
+
+  <div class="stage">
+    <div id="sheet" class="sheet" contenteditable spellcheck="false"></div>
+  </div>
+
+<script>
+// ===== Helpers =====
+const $ = (q, el=document)=> el.querySelector(q);
+const $$ = (q, el=document)=> [...el.querySelectorAll(q)];
+const sheet = $('#sheet');
+const badge = $('#typeBadge');
+const TYPES = ['scene','action','character','parenthetical','dialogue','transition'];
+
+function makeLine(type, text=''){
+  const p = document.createElement('div');
+  p.className='line'; p.dataset.type=type; p.textContent=text; p.contentEditable='true';
+  return p;
+}
+
+function getCurrentLine(){
+  const sel = getSelection(); if(!sel || sel.rangeCount===0) return null;
+  let n = sel.anchorNode; if(!n) return null; if(n.nodeType===3) n = n.parentElement;
+  return n?.closest('.line');
+}
+
+function setType(el, type){
+  if(!el) return; el.dataset.type = type;
+  if(['scene','transition','character'].includes(type)) el.textContent = el.textContent.toUpperCase();
+  badge.textContent = typeLabel(type);
+}
+
+function typeLabel(t){
+  return ({scene:'ESCENA', action:'ACCIÓN', character:'PERSONAJE', parenthetical:'APARTE', dialogue:'DIÁLOGO', transition:'TRANSICIÓN'})[t] || t.toUpperCase();
+}
+
+function placeCaretEnd(el){
+  const r=document.createRange(); r.selectNodeContents(el); r.collapse(false);
+  const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+
+function nextTypeAfter(type){
+  switch(type){
+    case 'scene': return 'action';
+    case 'action': return 'action';
+    case 'character': return 'dialogue';
+    case 'parenthetical': return 'dialogue';
+    case 'dialogue': return 'dialogue';
+    case 'transition': return 'scene';
+    default: return 'action';
+  }
+}
+
+// ===== Persistencia (localStorage) =====
+const KEY = 'demoGuionDocV1';
+function serialize(){
+  const lines = $$('.line', sheet).map(el=>({type:el.dataset.type, text:el.textContent}));
+  return { updatedAt: Date.now(), lines };
+}
+function deserialize(data){
+  sheet.innerHTML='';
+  (data?.lines||[]).forEach(l=> sheet.appendChild(makeLine(l.type, l.text||'')));
+  if(!data?.lines?.length) initSample();
+  // Restaurar cursor al final
+  placeCaretEnd(sheet.lastElementChild || sheet);
+  // Actualizar badge según línea actual
+  const cur = getCurrentLine(); if(cur) badge.textContent = typeLabel(cur.dataset.type);
+}
+function saveLocal(){
+  try{ localStorage.setItem(KEY, JSON.stringify(serialize())); flash('Guardado ✓'); }
+  catch(e){ alert('No se pudo guardar: '+e.message); }
+}
+function loadLocal(){
+  const raw = localStorage.getItem(KEY);
+  if(!raw){ flash('No hay guardado'); return; }
+  try{ const data = JSON.parse(raw); deserialize(data); flash('Cargado ✓'); }
+  catch(e){ alert('Error al cargar: '+e.message); }
+}
+function autoSave(){ try{ localStorage.setItem(KEY, JSON.stringify(serialize())); }catch{} }
+
+// ===== PDF (Imprimir) =====
+function exportPDF(){
+  // Usa estilos @media print y el diálogo nativo del navegador para "Guardar como PDF".
+  window.print();
+}
+
+// ===== Init =====
+function initSample(){
+  sheet.appendChild(makeLine('scene','INT. LUGAR - DÍA'));
+  sheet.appendChild(makeLine('action','Descripción de la acción...'));
+  sheet.appendChild(makeLine('character','PERSONAJE'));
+  sheet.appendChild(makeLine('dialogue','Diálogo...'));
+}
+function init(){
+  sheet.innerHTML='';
+  const raw = localStorage.getItem(KEY);
+  if(raw){ try{ deserialize(JSON.parse(raw)); }catch{ initSample(); } }
+  else{ initSample(); }
+  placeCaretEnd(sheet.lastElementChild);
+  badge.textContent = typeLabel(getCurrentLine()?.dataset.type || 'scene');
+}
+
+// ===== Keyboard handling =====
+sheet.addEventListener('keydown', (e)=>{
+  const line = getCurrentLine(); if(!line) return;
+  // Tab rota entre tipos
+  if(e.key==='Tab'){
+    e.preventDefault();
+    const idx = TYPES.indexOf(line.dataset.type);
+    const next = TYPES[(idx+1)%TYPES.length];
+    setType(line, next); autoSave();
+    return;
+  }
+  // Enter crea la siguiente línea con tipo sugerido
+  if(e.key==='Enter'){
+    e.preventDefault();
+    const nt = nextTypeAfter(line.dataset.type);
+    const nl = makeLine(nt,'');
+    line.after(nl); placeCaretEnd(nl); setType(nl, nt); autoSave();
+    return;
+  }
+  // Atajos Ctrl+1..6 para fijar tipo
+  if((e.ctrlKey||e.metaKey) && !e.shiftKey){
+    const map = { '1':'scene', '2':'action', '3':'character', '4':'parenthetical', '5':'dialogue', '6':'transition' };
+    const t = map[e.key]; if(t){ e.preventDefault(); setType(line, t); autoSave(); }
+    if(e.key.toLowerCase()==='s'){ e.preventDefault(); saveLocal(); }
+  }
+});
+
+// Forzar mayúsculas en tipos concretos al escribir
+sheet.addEventListener('input', ()=>{
+  const line = getCurrentLine(); if(!line) return;
+  if(['scene','transition','character'].includes(line.dataset.type)){
+    const pos = saveCaret(line);
+    line.textContent = line.textContent.toUpperCase();
+    restoreCaret(line, pos);
+  }
+  autoSave();
+});
+
+// Caret helpers para mantener posición tras uppercasing
+function saveCaret(el){
+  const sel = getSelection(); if(!sel.rangeCount) return null;
+  const r = sel.getRangeAt(0).cloneRange();
+  const pre = r.cloneRange(); pre.selectNodeContents(el); pre.setEnd(r.endContainer, r.endOffset);
+  return pre.toString().length; // offset en caracteres
+}
+function restoreCaret(el, offset){
+  if(offset==null) return; const node = el.firstChild || el; const r=document.createRange();
+  let o=offset, stack=[node], found=null;
+  while(stack.length){
+    const n = stack.shift();
+    if(n.nodeType===3){
+      if(o<=n.textContent.length){ found={n, o}; break; }
+      o -= n.textContent.length;
+    }else{ stack.unshift(...n.childNodes); }
+  }
+  const sel=getSelection(); sel.removeAllRanges();
+  if(found){ r.setStart(found.n, found.o); r.collapse(true); sel.addRange(r); }
+}
+
+// Click en la hoja actualiza badge
+sheet.addEventListener('click', ()=>{ const l=getCurrentLine(); if(l) badge.textContent=typeLabel(l.dataset.type); });
+
+// Botones
+$('#saveBtn').addEventListener('click', saveLocal);
+$('#loadBtn').addEventListener('click', loadLocal);
+$('#exportPdfBtn').addEventListener('click', exportPDF);
+
+// Autosave cada 4s y al salir
+setInterval(autoSave, 4000);
+window.addEventListener('beforeunload', autoSave);
+
+init();
+</script>
+</body>
+</html>
