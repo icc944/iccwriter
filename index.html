@@ -13,6 +13,9 @@
 	<script type="text/javascript" src="/js/app.js"></script>
 	<script type="text/javascript" src="/js/config/routes.js"></script>
 
+    <!-- Servicios -->
+    <script type="text/javascript" src="/js/service/editor_state.service.js"></script>
+
     <link rel="stylesheet" href="/styles/style.css"> 
     <link rel="stylesheet" href="/styles/line.css"> 
 	
@@ -20,10 +23,11 @@
 	<script type="text/javascript" src="/js/controllers/main.controller.js"></script>
     <script type="text/javascript" src="/js/controllers/sheet.controller.js"></script>
 </head>
+
 <body ng-app="ICCWRITER" ng-controller="main_controller">
     <header>
         <h3>Iccwriter</h3>
-        <span class="badge">{{ state.badge }}</span>
+        <span id="badge" class="badge"></span>
         <button>Save</button>
     </header>
     <div ng-view></div>

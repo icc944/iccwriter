@@ -17,3 +17,33 @@
     white-space:pre-wrap;
     color:#1f2937
 }
+
+.line[data-type="action"]{
+    white-space:pre-wrap
+}
+
+.line[data-type="character"]{
+    text-transform:uppercase; 
+    font-family: Arial, Helvetica;
+    font-weight: 600;
+    text-align: center;
+}
+
+.line[data-type="dialogue"]{
+    max-width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-style: italic;
+    
+    text-transform: none;
+    font-weight: normal;
+}
+.line[data-type="parenthetical"]::before{content: '(';}
+.line[data-type="parenthetical"]::after{content: ')';}
+
+.line[data-type="parenthetical"]{
+    text-transform: lowercase;
+    font-weight: lighter;
+    text-align: center;
+}
