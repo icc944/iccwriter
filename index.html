@@ -14,12 +14,17 @@
 	<script type="text/javascript" src="/js/config/routes.js"></script>
 
     <link rel="stylesheet" href="/styles/style.css"> 
-	<!-- Controladores -->
+    <link rel="stylesheet" href="/styles/line.css"> 
+	
+    <!-- Controladores -->
 	<script type="text/javascript" src="/js/controllers/main.controller.js"></script>
+    <script type="text/javascript" src="/js/controllers/sheet.controller.js"></script>
 </head>
-<body ng-app="ICCWRITER", ng-controller="main_controller">
+<body ng-app="ICCWRITER" ng-controller="main_controller">
     <header>
         <h3>Iccwriter</h3>
+        <span class="badge">{{ state.badge }}</span>
+        <button>Save</button>
     </header>
     <div ng-view></div>
 </body>
