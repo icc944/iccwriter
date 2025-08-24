@@ -7,7 +7,7 @@ app.controller("sheet_controller", function($scope){
         'parenthetical':'dialogue',
         'dialogue':'transition',
         'transition':'shot',
-        'show':'scene'
+        'shot':'scene'
     };
 
     const types = Object.keys(map_types);
@@ -29,23 +29,21 @@ app.controller("sheet_controller", function($scope){
         s.addRange(range);
     }
 
-    function updateState(line){
-        $editor_badge.textContent = line.dataset.type;
+    function updateState(state){
+        $editor_badge.textContent = state;
     }
 
     //+ === Logica === 
     function getCurrentLine(){
         const selection = window.getSelection();
         if (!selection.anchorNode) return null;
-        
         let node = selection.anchorNode;
         if(node && node.nodeType === 3) node = node.parentElement;
-        
         if (node.className !== 'line') return null; 
-        
         console.log("Devolviendo linea actual:", node);
         return node;
     }
+
 
 
     function makeLine(type, text=''){
@@ -66,24 +64,52 @@ app.controller("sheet_controller", function($scope){
             SHEET.appendChild(makeLine('scene','INT. PLACE - DAY'));
         }
         
-        updateState(line);
+        updateState(line.dataset.type);
     });
     
     SHEET.addEventListener('keydown', (e)=>{
-        if(e.key==='Enter'){
+        if(e.key === 'Enter'){
             e.preventDefault();
             const line = getCurrentLine(); if (!line) return;
             
-            //* Generar casos para cuando
-            //* 1.- Termina un dialogo y sigue otro personaje
-            //* 2.- 
-            let next_type = line.dataset.type === 'dialogue' ? 'character':nextType(line.dataset.type);
+            let next_type=null;
+            console.log("[VALOR]:",line.textContent," [TIPO]:",line.dataset.type);
+
+            switch(line.dataset.type){
+                case 'dialogue':
+                    next_type = 'character';
+                    break;
+                
+                case 'parenthetical':
+                    if (line.textContent === ''){
+                        console.log("Entro en case");
+                        line.dataset.type = 'dialogue';
+                        updateState('dialogue');
+                        return;
+                    }
+
+                default:
+                    next_type = nextType(line.dataset.type);
+            }
+
             const new_line = makeLine(next_type, '');
-            line.after(new_line);
-            placeCaretEnd(new_line);
+
+
+            line.after(new_line); //* Es como un append child
             
-            updateState(line);
+            placeCaretEnd(new_line); //* Mover el apuntador al inicio
+            updateState(next_type);
             return;
+        }
+        
+        if (e.key === 'Tab'){
+            //+ 1.- Tab despues de terminar un dialogo => action
+            
+            e.preventDefault();
+            const line = getCurrentLine(); if (!line) return;
+            const current_type = line.dataset.type;
+            const next_type = nextType(current_type);
+            line.dataset.type = next_type;
         }
 
     });
@@ -92,7 +118,8 @@ app.controller("sheet_controller", function($scope){
         if(['ArrowUp','ArrowDown'].includes(e.key)){
             e.preventDefault();
             const line = getCurrentLine(); if (!line) return;
-            updateState(line);
+            
+            updateState(line.dataset.type);
         }
     });
 
