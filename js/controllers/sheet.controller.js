@@ -81,7 +81,7 @@ app.controller("sheet_controller", function($scope){
                     break;
                 
                 case 'parenthetical':
-                    if (line.textContent === ''){
+                    if (line.textContent.trim() === ''){
                         console.log("Entro en case");
                         line.dataset.type = 'dialogue';
                         updateState('dialogue');
@@ -103,13 +103,23 @@ app.controller("sheet_controller", function($scope){
         }
         
         if (e.key === 'Tab'){
-            //+ 1.- Tab despues de terminar un dialogo => action
-            
             e.preventDefault();
+
             const line = getCurrentLine(); if (!line) return;
             const current_type = line.dataset.type;
-            const next_type = nextType(current_type);
+            let next_type = undefined;
+            
+            switch (current_type){
+                case 'character':
+                    next_type = line.textContent.trim() === '' ? 'action':nextType(current_type); 
+                    //+ Hacer esto causa un ciclo interminable
+                    break;
+                default:
+                    next_type = nextType(current_type);
+            }
+
             line.dataset.type = next_type;
+            updateState(next_type);
         }
 
     });
