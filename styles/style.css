@@ -16,6 +16,7 @@ header{
     height: 7vh;
     padding: 1vw;
     display: flex;
+    position: fixed;
     font-family: 'Courier New', Courier, monospace;
     align-items: center;
     background-color: white;
@@ -27,7 +28,8 @@ header{
     min-height:100vh; 
     display:flex; 
     justify-content:center; 
-    padding:24px
+    padding:24px;
+    margin-top:7vh;
 }
 
 .sheet{
@@ -48,4 +50,10 @@ header{
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
     text-transform: uppercase;
+}
+
+header button{
+    padding: 5px 10px;
+    margin-left: 80%;
+    float: right;
 }

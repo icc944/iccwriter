@@ -3,9 +3,9 @@ app.controller("sheet_controller", function($scope){
     const map_types = {
         'scene':'action',
         'action':'character',
-        'character':'parenthetical',
-        'parenthetical':'dialogue',
+        'character':'dialogue',
         'dialogue':'transition',
+        'parenthetical':'transition',
         'transition':'shot',
         'shot':'scene'
     };
@@ -81,12 +81,9 @@ app.controller("sheet_controller", function($scope){
                     break;
                 
                 case 'parenthetical':
-                    if (line.textContent.trim() === ''){
-                        console.log("Entro en case");
-                        line.dataset.type = 'dialogue';
-                        updateState('dialogue');
-                        return;
-                    }
+                    next_type = 'dialogue';
+                    updateState(next_type);
+                    break;
 
                 default:
                     next_type = nextType(line.dataset.type);
@@ -109,14 +106,16 @@ app.controller("sheet_controller", function($scope){
             const current_type = line.dataset.type;
             let next_type = undefined;
             
-            switch (current_type){
-                case 'character':
-                    next_type = line.textContent.trim() === '' ? 'action':nextType(current_type); 
-                    //+ Hacer esto causa un ciclo interminable
+            //*+ Revisar que habia antes seleccionado
+            switch(current_type){
+                case 'dialogue':
+                    next_type = 'parenthetical';
                     break;
                 default:
                     next_type = nextType(current_type);
+                    break;
             }
+
 
             line.dataset.type = next_type;
             updateState(next_type);

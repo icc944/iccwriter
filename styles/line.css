@@ -48,4 +48,16 @@
     text-align: center;
 }
 
-/* .line[data-type=""] */
+.line[data-type="transition"]{
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: right;
+}
+
+.line[data-type="shot"]::before{content: "[";}
+.line[data-type="shot"]::after{content: "]";}
+.line[data-type="shot"]{
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
