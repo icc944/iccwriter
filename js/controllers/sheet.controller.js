@@ -45,11 +45,17 @@ app.controller("sheet_controller", function($scope){
     }
 
 
-
     function makeLine(type, text=''){
         const line = document.createElement('div');
         line.className='line';
         line.dataset.type=type;
+    
+        switch(type){
+            case 'scene':
+                
+                break;
+        }
+
         line.textContent=text;
         line.contentEditable='true';
         return line
@@ -75,12 +81,16 @@ app.controller("sheet_controller", function($scope){
             let next_type=null;
             console.log("[VALOR]:",line.textContent," [TIPO]:",line.dataset.type);
 
-            switch(line.dataset.type){
-                case 'dialogue':
+            switch(true){
+                case line.textContent.trim() === '':
+                    next_type = 'scene';
+                    break;
+
+                case line.dataset.type === 'dialogue':
                     next_type = 'character';
                     break;
                 
-                case 'parenthetical':
+                case line.dataset.type === 'parenthetical':
                     next_type = 'dialogue';
                     updateState(next_type);
                     break;
@@ -120,7 +130,6 @@ app.controller("sheet_controller", function($scope){
             line.dataset.type = next_type;
             updateState(next_type);
         }
-
     });
 
     SHEET.addEventListener('keyup',(e)=>{
@@ -128,6 +137,11 @@ app.controller("sheet_controller", function($scope){
             e.preventDefault();
             const line = getCurrentLine(); if (!line) return;
             
+            updateState(line.dataset.type);
+        }
+
+        if(e.key === 'Backspace'){
+            const line = getCurrentLine(); if (!line) return;
             updateState(line.dataset.type);
         }
     });
