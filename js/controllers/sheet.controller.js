@@ -52,7 +52,9 @@ app.controller("sheet_controller", function($scope){
     
         switch(type){
             case 'scene':
-                
+                const span = ""
+                line.appendChild(document.createElement('span'));
+                console.log("Haré:", line);
                 break;
         }
 
