@@ -1,0 +1,30 @@
+.suggestion-box{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    max-width: 400px;
+    width: auto;
+    position: absolute;
+    display: none;
+    padding: 4px;
+    z-index: 9999;
+    text-transform: uppercase;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    box-shadow: 0 0 10px rgba(167, 167, 167,.3);
+}
+
+.suggestion-box > div{
+    width: 100%;
+}
+
+.suggestion-box div:nth-child(even){
+    background-color: #eee;    
+}
+
+.suggestion-box div:hover{
+    background-color: #87dad5;
+}
+
+.highlight{
+    background-color: #87dad5 !important;
+}
