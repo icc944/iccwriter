@@ -17,8 +17,10 @@ app.controller("sheet_controller", function($scope){
     const $editor_badge = document.querySelector('#badge');
     $editor_badge.textContent = "scene";
     $box_suggestion = document.getElementById('suggestions');
-    $box_sugg_pos = -1; 
+    $box_sugg_pos = -1; //* Initial positon of sugerence
 
+    //+ Stadisticals
+    $scope.scene_number = 0;
 
     //+ ==== Helpers ====
     function nextType(current_type){
@@ -47,6 +49,20 @@ app.controller("sheet_controller", function($scope){
         console.log($scope.character_names);
     }
 
+    function getNumberOfScene(){
+        let count = 0;
+        const all_lines = document.getElementsByClassName('line');
+
+        if (all_lines.length == 0) return 1;
+
+        for(let line in all_lines){
+            if(line.dataset.type == 'scene'){
+                count++;
+            }
+        }
+        return count;
+    }
+
     //+ === Logica === 
     function getCurrentLine(){
         const selection = window.getSelection();
@@ -63,11 +79,14 @@ app.controller("sheet_controller", function($scope){
         const line = document.createElement('div');
         line.className='line';
         line.dataset.type=type;
-    
+
         switch(type){
             case 'scene':
+                //+ Añadir escena
+                $scope.scene_number = getNumberOfScene();
+                line.dataset.scene = $scope.scene_number;
                 const span = ""
-                line.appendChild(document.createElement('span'));
+                // line.appendChild(document.createElement('span'));
                 console.log("Haré:", line);
                 break;
         }
