@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="app/static/js/components/clock/clock.css">
+<div id="clock">
+    <div class="weekdays">
+        <span ng-class="{'active':check_day('Lun')}">LUN</span>
+        <span ng-class="{'active':check_day('Mar')}">MAR</span>
+        <span ng-class="{'active':check_day('Mié')}">MIE</span>
+        <span ng-class="{'active':check_day('Jue')}">JUE</span>
+        <span ng-class="{'active':check_day('Vie')}">VIE</span>
+        <span ng-class="{'active':check_day('Sab')}">SAB</span>
+        <span ng-class="{'active':check_day('Dom')}">DOM</span>
+    </div>
+    <div class="month">
+        <p ng-show="clock_show=='lastupdate'">{{ formatCustomDate(timestamp)['month'] }}</p>
+        <p ng-show="clock_show=='waiting_time'">ESPERA:</p>
+    </div>
+    <div class="digits" ng-click="change_clock_show()">
+        <p ng-show="clock_show=='lastupdate'">{{ formatCustomDate(timestamp)['time'] }}</p>
+        <p ng-show="clock_show=='waiting_time'">{{ waiting_time }}</p>
+    </div>
+    <div class="ampm">
+        <p ng-show="clock_show=='lastupdate'" id="digit">{{ formatCustomDate(timestamp)['time_system'] }}</p>
+    </div>
+</div>

@@ -1,0 +1,119 @@
+/*+ === Caja de sugerencias === */
+.suggestion-box{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    max-width: 400px;
+    width: auto;
+    position: absolute;
+    display: none;
+    padding: 4px;
+    z-index: 9999;
+    text-transform: uppercase;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    box-shadow: 0 0 10px rgba(167, 167, 167,.3);
+}
+
+.suggestion-box > div{
+    width: 100%;
+}
+
+.suggestion-box div:nth-child(even){
+    background-color: #eee;    
+}
+
+.suggestion-box div:hover{
+    background-color: #87dad5;
+}
+
+.highlight{
+    background-color: #87dad5 !important;
+}
+
+/*+ === sheet === */
+.stage{
+    min-height:100vh; 
+    display:flex; 
+    justify-content:center; 
+    padding:24px;
+    margin-top:7vh;
+}
+
+.sheet{
+    width:816px; 
+    min-height:1056px; 
+    background:white; 
+    color:black;
+    box-shadow:0 20px 60px rgba(0,0,0,.15); 
+    border-radius:6px; 
+    padding:7vw; 
+    outline:none
+}
+
+/*+ === Tipos de lineas === */
+.line{
+    min-height: 1.2vh;
+    margin: 0 0 .35rem;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+.line[data-type="scene"]{
+    font-family: sans-serif;
+    text-transform: uppercase;
+    font-weight: 800;
+    color:#1f2937
+}
+
+.line[data-type="action"]{
+    font-family: sans-serif;
+    white-space:pre-wrap;
+    color:#1f2937
+}
+
+.line[data-type="action"]{
+    white-space:pre-wrap
+}
+
+.line[data-type="character"]{
+    text-transform:uppercase; 
+    font-family: Arial, Helvetica;
+    font-weight: 600;
+    text-align: center;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.line[data-type="dialogue"]{
+    max-width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-style: italic;
+    
+    text-transform: none;
+    font-weight: normal;
+}
+.line[data-type="parenthetical"]::before{content: '(';}
+.line[data-type="parenthetical"]::after{content: ')';}
+
+.line[data-type="parenthetical"]{
+    text-transform: lowercase;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.line[data-type="transition"]{
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: right;
+}
+
+.line[data-type="shot"]::before{content: "[";}
+.line[data-type="shot"]::after{content: "]";}
+.line[data-type="shot"]{
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}

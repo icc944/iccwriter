@@ -1,0 +1,10 @@
+.info_container{
+    display: block;
+}
+
+.btn_info{
+    cursor: pointer;
+    width: 1.1vw;
+    height: 1.1vw;
+    object-fit:cover;
+}

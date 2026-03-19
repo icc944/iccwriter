@@ -1,0 +1,47 @@
+#navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+
+    width: 100vw;
+    height: 5rem;
+    
+    background-color: #323232;
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+#navbar_left-side, #navbar_right-side{
+    display: inline-flex;
+    flex-direction: row;
+    overflow: hidden;
+    align-items: center;
+    gap: 1rem;
+}
+
+#navbar_left-side{
+    width: auto;
+    max-width: 70%;
+}
+
+#navbar_right-side{
+    margin-right: 2.5vw;
+}
+
+#navbar_appname{
+    text-transform: capitalize;
+    white-space: nowrap;
+    box-sizing: border-box;
+    font-size: 2rem;
+}
+
+#navbar_appname a{
+    color: white;
+    white-space: nowrap;
+    text-decoration: none;
+}

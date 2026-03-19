@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'Raleway-Medium';
+    src: url('../../../fonts/Raleway/static/Raleway-Medium.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'DS-DIGI';
+    src: url('../../../fonts/Digital/DS-DIGI.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#clock *{
+    margin: 0;
+}
+
+#clock{
+    width: 20rem;
+    height: var(--default-navbar-size);
+    position: relative;
+    display: grid;
+    gap: 0;
+    padding: .47vw 0.24vw 0 0.24vw;
+    grid-template-columns: repeat(7,1fr);
+    grid-auto-rows: minmax(1vw,auto);
+}
+
+.weekdays{
+    font-size: 0.55vw;
+    grid-column: 1/8;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-family: "Raleway-Medium", sans-serif;
+    color: #ffffff59;
+}
+
+.month{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.month p {font-size: 1vw; font-family: "Raleway-Medium", sans-serif;}
+
+.digits {
+    margin-left: 0.5vw;
+    grid-column: 2/7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+    padding-left: 0.5vw;
+}
+.digits p {height:auto; font-size: 4rem; font-family: 'DS-DIGI', 'Orbitron', sans-serif;}
+
+.ampm {
+    display: flex;
+    justify-content: left;
+    align-items: end;
+}
+
+.ampm p#digit{
+    font-family: 'DS-DIGI', 'Orbitron', sans-serif;
+}
+
+.active{
+    color: white;
+}

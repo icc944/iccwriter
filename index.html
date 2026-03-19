@@ -1,39 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<html lang="en" ng-app="Writter">
+  <head>
+    <meta charset="uft-8">
+    <title> App Template</title>
+    <link rel="icon" href="/static/src/icons/film.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iccwriter</title>
 
-    <!-- Angular js -->
-	<script type="text/javascript" src="/js/framework/angular.min.js"></script>
-	<script type="text/javascript" src="/js/framework/angular-route.min.js"></script>
-	<script type="text/javascript" src="/js/framework/angular-resource.min.js"></script>
-	<script type="text/javascript" src="/js/framework/angular-animate.min.js"></script>
-    <script type="text/javascript" src="/js/framework/angular-aria.min.js"></script>
-    <script type="text/javascript" src="/js/framework/angular-material.min.js"></script>
-	<script type="text/javascript" src="/js/app.js"></script>
-	<script type="text/javascript" src="/js/config/routes.js"></script>
-
-    <!-- Servicios -->
-    <script type="text/javascript" src="/js/service/editor_state.service.js"></script>
+    <!--+ EXTERNAL -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-    <link rel="stylesheet" href="/styles/style.css"> 
-    <link rel="stylesheet" href="/styles/line.css">
-    <link rel="stylesheet" href="/styles/suggestions.css"> 
-    <link rel="stylesheet" href="/styles/angular-material.min.css"> 
-	
-    <!-- Controladores -->
-	<script type="text/javascript" src="/js/controllers/main.controller.js"></script>
-    <script type="text/javascript" src="/js/controllers/sheet.controller.js"></script>
-</head>
+    <!--+ ANGULAR -->
+		<link rel="stylesheet" href="/static/js/angular/angular-material.min.css">
+    <link rel="stylesheet" href="/static/styles/angular/docs.css">
+    <link rel="stylesheet" href="/static/styles/angular/roboto.css">
+    <link rel="stylesheet" href="/static/styles/angular/nv.d3.min.css">
+    <link rel="stylesheet" href="/static/styles/project.css">
+    
+    <!--+ Framework -->
+    <script src="/static/js/angular/1.8.3/angular.min.js"></script>
+    <script src="/static/js/angular/1.8.3/angular-animate.min.js"></script>
+    <script src="/static/js/angular/1.8.3/angular-aria.min.js"></script>
+    <script src="/static/js/angular/1.8.3/angular-messages.min.js"></script>
+    <script src="/static/js/angular/1.8.3/angular-route.min.js"></script>
+    <script src="/static/js/angular/angular-material.min.js"></script>
 
-<body ng-app="ICCWRITER" ng-controller="main_controller">
-    <header>
-        <h3>Ic2writer</h3>
-        <span id="badge" class="badge"></span>
-        <md-button ng-click="saveSheet()">Save</md-button>
-    </header>
-    <div ng-view></div> <!-- Here the pages-->
-</body>
-</html>s
+    <!--+ STYLES -->
+    <link rel="stylesheet" href="/static/styles/default.css">
+    <link rel="stylesheet" href="/static/styles/sidenav.css">
+    <link rel="stylesheet" href="/static/styles/styles.css">
+    <link rel="stylesheet" href="/static/styles/home.css">
+    <link rel="stylesheet" href="/static/styles/modals/new_project.css">
+    
+    <!--+ SERVICES -->
+    <script src='/static/js/app.js'></script>
+    <script src='/static/js/config/theme.js'></script>
+    
+    <script src='/static/js/services/advice.service.js'></script>
+    <script src='/static/js/services/manage_project.service.js'></script>
+    <script src='/static/js/services/cache.service.js'></script>
+    <script src='/static/js/services/data.service.js'></script>
+    <script src='/static/js/services/datetime.service.js'></script>
+    <script src='/static/js/services/url.service.js'></script> 
+    <script src='/static/js/config/routes.js'></script>
+
+    <!--! COMPONENTS -->
+    <script src="/static/js/components/navbar/navbar.js"></script>
+
+    <!--% CONTROLLERS -->
+    <script src="/static/js/controllers/default/404.ctrl.js"></script>
+    <script src="/static/js/controllers/default/base.ctrl.js"></script>
+    <script src="/static/js/controllers/main.ctrl.js"></script>
+    <script src="/static/js/controllers/project.ctrl.js"></script>
+
+    
+  </head>
+
+  <body ng-cloak ng-controller="base_controller">
+    <div layout="column" style="height:100vh" ng-controller="main_controller">
+  
+      <!--+ NAVBAR -->
+      <custom-navbar show-sidenav="toggleSidenav()"></custom-navbar>
+  
+      <md-sidenav-container flex>
+  
+        <!--+ SIDENAV -->
+        <md-sidenav
+          class="md-sidenav-left"
+          md-component-id="LeftSideNav"
+          md-whiteframe="4">
+  
+          <md-content layout-padding>
+  
+            <md-card class="md-card-header__user">
+              <md-card-header>
+                <md-card-avatar>
+                  <img src="/static/src/user.svg"/>
+                </md-card-avatar>
+                <md-card-header-text>
+                  <span class="md-title">Mi Estudio</span>
+                  <span class="md-subhead">Mi espacio de trabajo</span>
+                </md-card-header-text>
+              </md-card-header>
+            </md-card>
+  
+            <md-subheader class="md-menu-subheader">Menu principal</md-subheader>
+            
+            <md-list-item ng-click="navigateTo('data usage', $event)">
+              <img width="25px" class="svg-icon-navside" src="/static/src/user-profile.svg"/>
+              <p>Mi perfil</p>
+            </md-list-item>
+
+            <md-list-item>
+                <img width="25px" class="svg-icon-navside" src="/static/src/portfolio.svg"/>
+                <p>Mis Proyectos</p>
+
+                <md-menu class="md-secondary">
+                  <md-button 
+                    class="md-icon-button"
+                    aria-label="Opciones de proyectos">
+                  </md-button>
+
+                  <md-menu-content width="4">
+                    <md-menu-item>
+                      <md-button ng-click="navigateTo('projects')">
+                        Ver proyectos
+                      </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                      <md-button ng-click="openNewProjectModal($event)">
+                        Nuevo proyecto
+                      </md-button>
+                    </md-menu-item>
+
+                    <md-menu-divider></md-menu-divider>
+
+                    <md-menu-item>
+                      <md-button>
+                        Importar proyecto
+                      </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                      <md-button>
+                        Exportar Proyecto
+                      </md-button>
+                    </md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+
+            </md-list-item>
+
+            
+            <md-list-item ng-click="navigateTo(setting.extraScreen, $event)">
+              <img width="25px" class="svg-icon-navside" src="/static/src/autosave.svg"/>
+              <p> Autosave </p>
+              <md-switch class="md-secondary" ng-model="setting.autosave.enabled"></md-switch>
+            </md-list-item>
+
+          </md-content>
+        </md-sidenav>
+  
+        <!--+ CONTENIDO PRINCIPAL -->
+        <md-content flex style="height: 100vh;">
+          <div id="ng-viewer" ng-view></div>
+        </md-content>
+  
+      </md-sidenav-container>
+  
+    </div>
+  </body>
+  
+</html>

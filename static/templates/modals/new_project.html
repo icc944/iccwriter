@@ -1,0 +1,53 @@
+<md-dialog aria-label="Nuevo proyecto" class="new-project-dialog">
+
+    <!-- Header -->
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Nuevo Proyecto</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()" aria-label="Cerrar">
+          ✕
+        </md-button>
+      </div>
+    </md-toolbar>
+  
+    <!-- Contenido -->
+    <md-dialog-content>
+      <div class="md-dialog-content">
+  
+        <md-input-container class="md-block">
+          <label>Nombre del proyecto</label>
+          <input ng-model="project.name" required>
+        </md-input-container>
+  
+        <md-input-container class="md-block">
+          <label>Categoría</label>
+          <input ng-model="project.category">
+        </md-input-container>
+  
+        <md-input-container class="md-block">
+          <label>Género</label>
+          <input ng-model="project.gender">
+        </md-input-container>
+  
+        <md-input-container class="md-block">
+          <label>Descripción</label>
+          <textarea ng-model="project.description" rows="3"></textarea>
+        </md-input-container>
+  
+      </div>
+    </md-dialog-content>
+  
+    <!-- Acciones -->
+    <md-dialog-actions layout="row">
+      <md-button ng-click="cancel()">
+        Cancelar
+      </md-button>
+      <span flex></span>
+      <md-button class="md-raised md-primary" ng-click="save()" ng-disabled="is_saving_project">
+        Crear proyecto
+      </md-button>
+    </md-dialog-actions>
+  
+  </md-dialog>
+  

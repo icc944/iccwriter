@@ -1,0 +1,147 @@
+:root {
+    font-size: 10px;
+}
+  
+.project-card {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    
+    width: 95%;
+    height: 180px;
+
+    color: black;
+    font-size: 10px;
+    font-weight: bold;
+    
+    margin-bottom: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    
+    background: #ffffff;
+    border-left: 1.4rem solid rgb(46, 129, 207);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.404);
+    transition: all 400ms ease-in-out;
+}
+
+.project-card:hover{
+    transform: scale(1.02);
+}
+
+.project-img{
+    background-color: rgb(10, 24, 61);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    max-width: 9rem;
+    max-height: 9rem;
+
+    width: clamp(3rem, 7rem, 9rem);
+    height: clamp(3rem, 7rem, 9rem);
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.project-img__new-project{
+    background-color: rgb(24, 113, 173);
+}
+
+.project-img img{
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+.project-meta{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+    margin: 0 0.5rem;
+}
+
+.project-label{
+    font-size: 1.3rem;
+}
+
+.project-name{
+    text-transform: capitalize;
+    font-size: 2rem;
+}
+
+.project-category, .project-gender{
+    text-transform: capitalize;
+    color: #2c2c2c;
+}
+
+.project-gender-tags .tag{
+    color: #e9e9e9;
+    background-color: rgb(48, 48, 94);
+    margin-right: 0.3rem;
+    padding: 0.2rem;
+    border-radius: 0.3rem;
+}
+
+.project-description{
+    color: #5a5a5a;
+    width: auto;
+    height: auto;
+    max-height: 90px;
+    overflow-y: auto;
+}
+
+.project-last_mod{
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 1rem;
+    color: #323232;
+}
+
+.project-label.editable{
+    width: 100%;
+    padding: 0 .5rem;
+    margin: .3rem 0;
+    color: black;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    background-color: #ebebeb;
+    border: 1px solid black;
+}
+
+.project-manage{
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 5rem;
+    height: 100%;
+
+    background-color: rgb(216, 216, 216);
+}
+
+.project-manage:hover{
+    background-color: rgb(204, 204, 204);
+}
+
+.project-manage button{
+    background: none;
+    border: none;
+    padding: .5rem;
+    transition: all 500ms ease-in-out;
+}
+
+md-progress-circular{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.project-manage button:hover{
+    background-color: #dadada;
+}

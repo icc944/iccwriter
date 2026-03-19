@@ -1,0 +1,99 @@
+<div class="project-card" ng-repeat="project in projects_metadata |orderBy:'last_modificated':true">
+    
+    <div class="project-img">
+        <img ng-src="{{project.icon}}" width="40px"/>
+    </div>
+
+    <div class="project-meta">
+        <!--* Nombre del proyecto -->
+        <span 
+            ng-dblclick="!project.isEditing && toggleEdit(project, 'edit')" 
+            ng-blur="onBlur($event, project) && project.isEditing" 
+            ng-keydown="onKeyDown($event, project)"
+            contenteditable="{{project.isEditing}}" 
+            ng-class="{ editable: project.isEditing }" 
+            id="project_name_{{project.id}}" 
+            class="project-name project-label"
+            tabindex="0">
+            {{project.name}}
+        </span>
+
+        <!--* Categoria -->
+        <span 
+            ng-dblclick="!project.isEditing && toggleEdit(project, 'edit')" 
+            ng-blur="onBlur($event, project) && project.isEditing"
+            ng-keydown="onKeyDown($event, project)"
+            contenteditable="{{project.isEditing}}" 
+            ng-class="{ editable: project.isEditing }" 
+            class="project-category project-label"
+            id="project_category_{{project.id}}" 
+            tabindex="0">
+            {{project.category}}
+        </span>
+        
+        <!--* Genero -->
+        <div 
+            ng-if="!project.isEditing"
+            ng-dblclick="toggleEdit(project, 'edit')"
+            class="project-gender-tags">
+            <span 
+                class="tag"
+                ng-repeat="tag in project.gender.split(',')">
+                {{tag.trim()}}
+            </span>
+
+        </div>
+
+
+        <span 
+            ng-if="project.isEditing"
+            
+            ng-blur="onBlur($event, project) && project.isEditing"
+            ng-keydown="onKeyDown($event, project)"
+            contenteditable="{{project.isEditing}}" 
+            ng-class="{ editable: project.isEditing }" 
+            class="project-gender project-label"
+            id="project_gender_{{project.id}}" 
+            tabindex="0">
+            {{project.gender}}
+        </span>
+        
+        <!--* Descripción -->
+        <span 
+            ng-dblclick="!project.isEditing && toggleEdit(project, 'edit')" 
+            ng-blur="onBlur($event, project) && project.isEditing"
+            ng-keydown="onKeyDown($event, project)" 
+            contenteditable="{{project.isEditing}}" 
+            ng-class="{ editable: project.isEditing }"
+            class="project-description project-label"
+            id="project_description_{{project.id}}"
+            tabindex="0">
+            <i>{{project.description}}</i>
+        </span>
+
+        <!--* Ultima Modificación -->
+        <span class="project-last_mod">
+            <span>{{ project.last_modificated.toTimeString().split(' ')[0]}}</span>
+            <span>{{project.last_modificated.toLocaleDateString()}} </span>
+        </span>
+    </div>
+
+    <div class="project-manage">
+        <button ng-click="openProject(project)">
+            <img ng-src="/static/src/icons/open.svg"
+                width="24px"/>
+        </button>
+
+        <button ng-click="deleteProject(project)">
+            <md-progress-circular
+                ng-if="project.isDeleting"
+                md-mode="indeterminate"
+                md-diameter="18">
+            </md-progress-circular>
+            <md-icon
+                ng-if="!project.isDeleting"
+                md-svg-icon="/static/src/icons/delete.svg">
+            </md-icon>
+        </button>
+    </div>
+</div>
