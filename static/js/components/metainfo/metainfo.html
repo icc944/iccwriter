@@ -5,7 +5,12 @@
     <div class="info-body">
         <section class="body-sec1">
             <h5 class="sec1-title">{{project_meta.name}}</h5>
-            <p class="sec1-desc">{{project_meta.description}}</p>
+            <p class="sec1-desc" ng-class="{ 'expanded': project.showFullDesc }">
+                {{project_meta.description}}
+            </p>
+            <span ng-show="project_meta.description.split(' ').length >= 15" class="see-more" ng-click="project.showFullDesc = !project.showFullDesc">
+                {{ project.showFullDesc ? 'Ver menos' : 'Ver más' }}
+            </span>
         </section>
         <section class="body-sec2">
             <ul>
@@ -32,5 +37,16 @@
             </ul>
         </section>
     </div>
-    <div class="info-footer"></div>
+    <div class="info-footer">
+        <md-button 
+            aria-label="Guardar">
+            Guardar
+        </md-button>
+
+        <md-button
+            class="btn-settings" 
+            aria-label="Settings">
+            <img src="/static/src/icons/settings.svg"/>
+        </md-button>
+    </div>
 </div>
