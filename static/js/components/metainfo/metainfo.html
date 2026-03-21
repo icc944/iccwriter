@@ -1,16 +1,16 @@
-<div class="meta-info">
-    <div class="info-header">
+<md-menu 
+    class="meta-info">
+  <md-button 
+    aria-label="OpenMeta" class="info-header" ng-click="$mdMenu.open($event)" md-close-on-click="false">
         <h5 class="header-label">Proyecto</h5>
-    </div>
+  </md-button>
+  <md-menu-content class="meta-body">
     <div class="info-body">
         <section class="body-sec1">
             <h5 class="sec1-title">{{project_name}}</h5>
-            <p class="sec1-desc" ng-class="{ 'expanded': project.showFullDesc }">
+            <p class="sec1-desc">
                 {{project_description}}
             </p>
-            <span ng-show="project_description.split(' ').length >= 15" class="see-more" ng-click="project.showFullDesc = !project.showFullDesc">
-                {{ project.showFullDesc ? 'Ver menos' : 'Ver más' }}
-            </span>
         </section>
         <section class="body-sec2">
             <ul>
@@ -43,12 +43,6 @@
             aria-label="Guardar">
             Guardar
         </md-button>
-
-        <md-button
-            class="btn-settings" 
-            aria-label="Settings">
-            <img src="/static/src/icons/settings.svg"/>
-        </md-button>
     </div>
-</div>
-
+  </md-menu-content>
+</md-menu>
