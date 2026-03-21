@@ -20,9 +20,13 @@ function projectControllerHandler($scope, $routeParams,ManageProject){
     //+ Ejemplo default
     $scope.script = {
         //@ Metadatos del script
-        pages_qty:1,
-        scenes_qty:1,
-        characters_qty:4,
+        meta:{
+            pages:1,
+            scenes:1,
+            characters:4,
+            lines:4,
+            dialogs:1,
+        },
 
         //@ Cuerpo del script
         pages:[

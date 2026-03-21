@@ -3,12 +3,17 @@ angular.module('Writter')
     return {
         restrict: 'E',
         scope:{
-            projectMeta:'='
+            projectName:'=',
+            projectDescription:'=',
+            projectMeta:'=',
+
         },
         templateUrl:'/static/js/components/metainfo/metainfo.html',
         link: function(scope, element, attrs){
+            scope.project_name = scope.projectName;
+            scope.project_description = scope.projectDescription;
             scope.project_meta = scope.projectMeta;
-            console.log(scope.projectMeta);
+
         }
     }
 }]);

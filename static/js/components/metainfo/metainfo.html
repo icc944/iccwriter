@@ -4,11 +4,11 @@
     </div>
     <div class="info-body">
         <section class="body-sec1">
-            <h5 class="sec1-title">{{project_meta.name}}</h5>
+            <h5 class="sec1-title">{{project_name}}</h5>
             <p class="sec1-desc" ng-class="{ 'expanded': project.showFullDesc }">
-                {{project_meta.description}}
+                {{project_description}}
             </p>
-            <span ng-show="project_meta.description.split(' ').length >= 15" class="see-more" ng-click="project.showFullDesc = !project.showFullDesc">
+            <span ng-show="project_description.split(' ').length >= 15" class="see-more" ng-click="project.showFullDesc = !project.showFullDesc">
                 {{ project.showFullDesc ? 'Ver menos' : 'Ver más' }}
             </span>
         </section>
@@ -16,29 +16,30 @@
             <ul>
                 <li>
                     <img src="/static/src/icons/page.svg"/>
-                    3 Páginas
+                    {{project_meta.pages}} Páginas
                 </li>
                 <li>
                     <img src="/static/src/icons/clapper.svg"/>
-                    5 Escenas
+                    {{project_meta.scenes}} Escenas
                 </li>
                 <li>
                     <img src="/static/src/icons/character.svg"/>
-                    3 Personajes
+                    {{project_meta.characters}} Personajes
                 </li>
                 <li>
                     <img src="/static/src/icons/lines.svg"/>
-                    300 Lineas
+                    {{project_meta.lines}} Lineas
                 </li>
                 <li>
                     <img src="/static/src/icons/dialog.svg"/>
-                    40 Dialogos
+                    {{project_meta.dialogs}} Dialogos
                 </li>
             </ul>
         </section>
     </div>
     <div class="info-footer">
         <md-button 
+            class="btn-save"
             aria-label="Guardar">
             Guardar
         </md-button>
@@ -50,3 +51,4 @@
         </md-button>
     </div>
 </div>
+

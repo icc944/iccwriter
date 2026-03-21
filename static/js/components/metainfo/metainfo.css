@@ -70,6 +70,7 @@
         .see-more{
             margin: 1rem;
             font-size: 7px;
+            cursor: pointer;
         }
 
         .body-sec2 ul{
@@ -105,6 +106,12 @@
         background-color: rgb(218, 218, 218);
     }
 
+.meta-info
+    .info-footer
+        .btn-save{
+            width: 100%;
+        }
+        
 .meta-info
     .info-footer
         .btn-settings {
