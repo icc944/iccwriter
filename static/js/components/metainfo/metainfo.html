@@ -1,16 +1,24 @@
-<md-menu 
-    class="meta-info">
-  <md-button 
-    aria-label="OpenMeta" class="info-header" ng-click="$mdMenu.open($event)" md-close-on-click="false">
+<div class="meta-info" ng-class="{'open':isMetaOpen}">
+    <div class="info-header">
         <h5 class="header-label">Proyecto</h5>
-  </md-button>
-  <md-menu-content class="meta-body">
-    <div class="info-body">
+        <md-button 
+            class="btn-openclosed"
+            ng-click="isMetaOpen=!isMetaOpen"
+            aria-label="Open/Close">
+            <img 
+              ng-src="{{ isMetaOpen ? '/static/src/icons/closearrow.svg' : '/static/src/icons/openarrow.svg' }}" 
+            />
+        </md-button>
+    </div>
+    <div class="info-body" ng-class="{'open':isMetaOpen}">
         <section class="body-sec1">
             <h5 class="sec1-title">{{project_name}}</h5>
-            <p class="sec1-desc">
+            <p class="sec1-desc" ng-class="{ 'expanded': project.showFullDesc }">
                 {{project_description}}
             </p>
+            <span ng-show="project_description.split(' ').length >= 15" class="see-more" ng-click="project.showFullDesc = !project.showFullDesc">
+                {{ project.showFullDesc ? 'Ver menos' : 'Ver más' }}
+            </span>
         </section>
         <section class="body-sec2">
             <ul>
@@ -36,13 +44,19 @@
                 </li>
             </ul>
         </section>
+        <div class="info-footer">
+            <md-button 
+                class="btn-save"
+                aria-label="Guardar">
+                Guardar
+            </md-button>
+    
+            <md-button
+                class="btn-settings" 
+                aria-label="Settings">
+                <img src="/static/src/icons/settings.svg"/>
+            </md-button>
+        </div>
     </div>
-    <div class="info-footer">
-        <md-button 
-            class="btn-save"
-            aria-label="Guardar">
-            Guardar
-        </md-button>
-    </div>
-  </md-menu-content>
-</md-menu>
+</div>
+

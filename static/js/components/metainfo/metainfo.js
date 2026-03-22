@@ -14,6 +14,7 @@ angular.module('Writter')
             scope.project_description = scope.projectDescription;
             scope.project_meta = scope.projectMeta;
 
+            scope.isMetaOpen = true;
         }
     }
 }]);
