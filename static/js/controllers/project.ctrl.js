@@ -34,7 +34,7 @@ function projectControllerHandler($scope, $routeParams,ManageProject){
             {
                 lines:[
                     {type:'scene', text:'INT. CASA - DIA'}, 
-                    {type:'action', text:'Llegas, te inspiras, y comienza un nuevo inicio.'},
+                    {type:'action', text:'Llegas, te inspiras, y comienzas un nuevo inicio.'},
                     {type:'character', text:'TÚ'},
                     {type:'dialogue', text:'Hoy es un buen día para empezar...'}
                 ]
@@ -51,6 +51,26 @@ function projectControllerHandler($scope, $routeParams,ManageProject){
         return line
     }
 
+    function getCurrentLine(){
+        const selection = window.getSelection();
+        if (!selection.anchorNode) return null;
+        let node = selection.anchorNode;
+        if(node && node.nodeType === 3) node = node.parentElement;
+        if (node.className !== 'line') return null; 
+        console.log("Devolviendo linea actual:", node);
+        return node;
+    }
+
+    //+ ==== Eventos ====
+    SHEET.addEventListener('click', ()=>{
+        const line = getCurrentLine();
+        if (!line){
+            console.log("Canva vacio!");
+            SHEET.appendChild(makeLine('scene','INT. PLACE - DAY'));
+        }
+    });
+
+    //@ ================== INIT =======================
     function init(){
         SHEET.innerHTML = "";
         $scope.script.pages.forEach(pages => {
